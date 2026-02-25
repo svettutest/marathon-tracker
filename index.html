@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>100 раз за раз — Утка Лав</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;600;700;800&display=swap');
+:root{--pink:#ff2d78;--cyan:#00f0ff;--purple:#b44dff;--green:#39ff14;--orange:#ff6b35;--yellow:#ffe600;--bg:#0a0a1a;--card:#12122a;--card2:#1a1a3a}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:100vh;min-height:100dvh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 20% 20%,rgba(180,77,255,.08)0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,240,255,.06)0%,transparent 50%);pointer-events:none;z-index:0}
+.scr{display:none;position:relative;z-index:1;padding:16px 16px 40px;max-width:480px;margin:0 auto;min-height:100vh;animation:fi .4s ease}
+.scr.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* Onboarding */
+.logo{text-align:center;margin:30px 0 20px}.logo .e{font-size:64px;display:block;margin-bottom:8px}
+.logo h1{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-transform:uppercase;letter-spacing:2px}
+.logo .sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px;font-weight:600}
+.logo .brand{font-size:14px;color:var(--purple);font-weight:700;margin-top:8px}
+.sec{margin:20px 0}.sec label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.35);margin-bottom:8px;font-weight:700}
+.inp{width:100%;padding:14px 18px;border:2px solid rgba(255,255,255,.1);border-radius:14px;background:var(--card);color:#fff;font-family:'Nunito';font-size:17px;font-weight:700;outline:0;transition:border .3s}
+.inp::placeholder{color:rgba(255,255,255,.2)}.inp:focus{border-color:var(--cyan)}
+
+/* Mode cards */
+.mg{display:flex;flex-direction:column;gap:8px}
+.mc{background:var(--card);border:2px solid rgba(255,255,255,.05);border-radius:14px;padding:14px 16px;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:12px}
+.mc:active{transform:scale(.98)}.mc.sel{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,240,255,.15)}
+.mc .me{font-size:28px;flex-shrink:0}.mc .mi{flex:1}.mc .ml{font-family:'Orbitron';font-size:16px;font-weight:700}
+.mc .md{font-size:12px;color:rgba(255,255,255,.35);margin-top:1px}
+.mc .df{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 8px;border-radius:16px;flex-shrink:0}
+.mc[data-m="10x10"] .df{background:rgba(57,255,20,.12);color:var(--green)}
+.mc[data-m="5x20"] .df{background:rgba(0,240,255,.12);color:var(--cyan)}
+.mc[data-m="4x25"] .df{background:rgba(180,77,255,.12);color:var(--purple)}
+.mc[data-m="2x50"] .df{background:rgba(255,107,53,.12);color:var(--orange)}
+.mc[data-m="1x100"] .df{background:rgba(255,45,120,.12);color:var(--pink)}
+.mc .ck{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.12);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .3s}
+.mc.sel .ck{border-color:var(--cyan);background:var(--cyan);color:var(--bg)}
+
+/* Time */
+.ts{display:flex;flex-direction:column;gap:8px}
+.tsl{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:10px 14px}
+.tsl .tl{font-size:12px;color:rgba(255,255,255,.4);font-weight:700;min-width:80px}
+.tsl input[type=time]{flex:1;padding:8px 12px;border:2px solid rgba(255,255,255,.08);border-radius:10px;background:var(--card2);color:#fff;font-family:'Orbitron';font-size:16px;font-weight:700;outline:0;text-align:center}
+.tsl input:focus{border-color:var(--purple)}
+.tsl input::-webkit-calendar-picker-indicator{filter:invert(1)}
+
+/* Buttons */
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:14px;font-family:'Nunito';font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--pink),var(--purple));box-shadow:0 4px 20px rgba(255,45,120,.3);transition:all .3s;margin-top:20px}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.btn2{display:block;width:100%;padding:12px;border:2px solid rgba(255,255,255,.08);border-radius:12px;background:0 0;color:rgba(255,255,255,.5);font-family:'Nunito';font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;transition:all .3s}
+
+/* Tracker */
+.hdr{text-align:center;padding:8px 0 4px}
+.hdr h1{font-family:'Orbitron';font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-transform:uppercase;letter-spacing:2px}
+.hdr .ug{font-size:14px;color:var(--cyan);font-weight:700;margin-top:4px}
+.hdr .br{font-size:11px;color:var(--purple);font-weight:600;margin-top:2px}
+.mbdg{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--purple);cursor:pointer}
+.ds{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0}
+.dn{font-family:'Orbitron';font-size:48px;font-weight:900;color:var(--pink);text-shadow:0 0 20px rgba(255,45,120,.5);line-height:1}
+.dm{text-align:left}.dm .dl{font-size:11px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.5px;font-weight:700}.dm .dt{font-size:18px;font-weight:800}
+
+/* Stats */
+.sr{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:14px 0}
+.sb{background:var(--card);border:1px solid rgba(255,255,255,.04);border-radius:12px;padding:10px 4px;text-align:center}
+.sb .sv{font-family:'Orbitron';font-size:18px;font-weight:700}.sb .sl{font-size:9px;color:rgba(255,255,255,.3);margin-top:2px;text-transform:uppercase;letter-spacing:.3px;font-weight:700}
+.sb.s1 .sv{color:var(--orange)}.sb.s2 .sv{color:var(--cyan)}.sb.s3 .sv{color:var(--green)}.sb.s4 .sv{color:var(--yellow)}
+
+/* Progress ring */
+.rw{display:flex;justify-content:center;margin:16px 0 12px}
+.rc{position:relative;width:160px;height:160px}
+.rs{transform:rotate(-90deg);width:160px;height:160px}
+.rb{fill:none;stroke:rgba(255,255,255,.04);stroke-width:10}.rf{fill:none;stroke:url(#g1);stroke-width:10;stroke-linecap:round;stroke-dasharray:402;stroke-dashoffset:402;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 0 6px rgba(255,45,120,.5))}
+.rt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.rt .rp{font-family:'Orbitron';font-size:32px;font-weight:900}.rt .rl{font-size:10px;color:rgba(255,255,255,.3);font-weight:700}
+
+/* Sets */
+.ss{margin:18px 0}.sh{text-align:center;font-size:12px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:12px}
+.sf{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.sbt{width:64px;height:64px;border-radius:16px;border:2px solid rgba(255,255,255,.06);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;position:relative;user-select:none}
+.sbt .sn{font-family:'Orbitron';font-size:18px;font-weight:700;color:rgba(255,255,255,.45)}.sbt .srp{font-size:10px;color:rgba(255,255,255,.2)}
+.sbt:active:not(.dn2){transform:scale(.9)}
+.sbt.nx{border-color:var(--pink);box-shadow:0 0 15px rgba(255,45,120,.3);animation:gp 2s ease-in-out infinite}.sbt.nx .sn{color:var(--pink)}
+@keyframes gp{0%,100%{box-shadow:0 0 8px rgba(255,45,120,.2)}50%{box-shadow:0 0 22px rgba(255,45,120,.5)}}
+.sbt.dn2{border-color:var(--green);box-shadow:0 0 12px rgba(57,255,20,.12);cursor:default}.sbt.dn2 .sn{color:var(--green)}.sbt.dn2 .srp{color:rgba(57,255,20,.4)}
+.sbt.dn2::after{content:'✓';position:absolute;top:2px;right:5px;font-size:12px;color:var(--green)}
+
+/* Action btn */
+.ab{display:block;width:100%;padding:16px;border:none;border-radius:14px;font-family:'Nunito';font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--pink),var(--purple));box-shadow:0 4px 20px rgba(255,45,120,.3);transition:all .3s;margin:18px 0}
+.ab:active{transform:scale(.97)}.ab:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.ab.done{background:linear-gradient(135deg,var(--green),var(--cyan));box-shadow:0 4px 20px rgba(57,255,20,.2)}
+
+/* Content cards */
+.cc{background:var(--card);border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:14px 16px;margin:8px 0;position:relative;overflow:hidden}
+.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.cc.c1::before{background:linear-gradient(90deg,var(--pink),var(--purple))}
+.cc .ci{font-size:20px;margin-bottom:4px}.cc .ct{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.3);font-weight:700;margin-bottom:4px}
+.cc .cx{font-size:13px;line-height:1.6;color:rgba(255,255,255,.75)}
+
+/* Calendar */
+.cal{margin:20px 0}.clt{text-align:center;font-size:12px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:10px}
+.clg{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cld{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron';font-size:12px;font-weight:700;background:var(--card);border:1px solid rgba(255,255,255,.03);color:rgba(255,255,255,.2);transition:all .3s}
+.cld.cd{background:rgba(57,255,20,.1);border-color:rgba(57,255,20,.35);color:var(--green)}
+.cld.ct2{border-color:var(--pink);color:var(--pink);box-shadow:0 0 8px rgba(255,45,120,.3)}
+.cld.ct2.cd{border-color:var(--green);color:var(--green);box-shadow:0 0 8px rgba(57,255,20,.3)}
+.cld.cm{background:rgba(255,45,120,.06);border-color:rgba(255,45,120,.15);color:rgba(255,45,120,.35)}
+.cld.cf{opacity:.3}
+
+/* Links */
+.lnk{background:var(--card);border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:14px;margin:12px 0;display:flex;flex-direction:column;gap:8px;align-items:center}
+.lnk a{color:var(--cyan);text-decoration:none;font-weight:700;font-size:13px;transition:color .3s}
+.lnk a:active{color:var(--pink)}
+.lnk .lt{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.25);font-weight:700}
+
+/* Settings btn */
+.stb{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:var(--card);color:rgba(255,255,255,.4);font-family:'Nunito';font-size:13px;font-weight:700;cursor:pointer;margin-top:10px}
+
+/* Overlay */
+.ov{position:fixed;inset:0;background:rgba(10,10,26,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .4s}
+.ov.sh{opacity:1;pointer-events:all}
+.ov .oe{font-size:72px;animation:pp .5s cubic-bezier(.175,.885,.32,1.275)}
+.ov .oh{font-family:'Orbitron';font-size:20px;color:var(--green);text-shadow:0 0 20px rgba(57,255,20,.5);margin:14px 0 6px;text-align:center}
+.ov .os{color:rgba(255,255,255,.45);font-size:15px;text-align:center}
+@keyframes pp{0%{transform:scale(0) rotate(-15deg)}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+
+/* Confetti */
+.cf2{position:fixed;width:8px;height:8px;border-radius:2px;z-index:101;animation:fl 3s ease-in forwards}
+@keyframes fl{0%{transform:translateY(-10vh) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* Reset */
+.rsc{background:var(--card);border:2px solid var(--pink);border-radius:14px;padding:18px;margin:16px 0;text-align:center}
+.rsc p{color:rgba(255,255,255,.6);margin-bottom:14px;font-size:14px}
+.rsc .rr{display:flex;gap:8px}.rsc .rr button{flex:1;padding:10px;border-radius:10px;border:none;font-family:'Nunito';font-size:13px;font-weight:800;cursor:pointer}
+.rc2{background:var(--card2);color:rgba(255,255,255,.5)}.rd{background:var(--pink);color:#fff}
+
+/* Instagram box */
+.ig-box{background:linear-gradient(135deg,rgba(193,53,132,.15),rgba(252,175,69,.1));border:1px solid rgba(193,53,132,.3);border-radius:14px;padding:16px;margin:12px 0;text-align:center}
+.ig-ico{font-size:28px;margin-bottom:6px}
+.ig-title{font-family:'Orbitron';font-size:14px;font-weight:700;color:#c135e0;margin-bottom:4px}
+.ig-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:12px}
+.ig-desc strong{color:#e1306c}
+.ig-btn{display:inline-block;padding:10px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#e1306c,#c135e0);color:#fff;font-family:'Nunito';font-size:13px;font-weight:800;cursor:pointer;transition:all .3s}
+.ig-btn:active{transform:scale(.95)}
+
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:0 0}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.06);border-radius:2px}
+</style>
+</head>
+<body>
+<svg style="position:absolute;width:0;height:0"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ff2d78"/><stop offset="50%" stop-color="#b44dff"/><stop offset="100%" stop-color="#00f0ff"/></linearGradient></defs></svg>
+
+<div class="scr on" id="s1">
+  <div class="logo"><span class="e">🦆</span><h1>100 раз<br>за раз</h1><div class="sub">Марафон приседаний • 14 дней</div><div class="brand">Утка Лав</div></div>
+  <div class="sec"><label>Как тебя зовут?</label><input type="text" class="inp" id="ni" placeholder="Твоё имя" maxlength="30" autocomplete="off"></div>
+  <button class="btn" id="b1" disabled>Далее →</button>
+</div>
+
+<div class="scr" id="s2">
+  <div class="logo" style="margin:16px 0"><span class="e">💪</span><h1 style="font-size:18px">Выбери режим</h1><div class="sub">100 приседаний в день — твой темп</div></div>
+  <div class="mg" id="mg"></div>
+  <button class="btn" id="b2" disabled>Далее →</button>
+  <button class="btn2" onclick="go('s1')">← Назад</button>
+</div>
+
+<div class="scr" id="s3">
+  <div class="logo" style="margin:16px 0"><span class="e">⏰</span><h1 style="font-size:18px">Напоминания</h1><div class="sub">Когда напомнить о подходах?</div></div>
+  <div class="ts" id="ts"></div>
+  <p style="text-align:center;font-size:12px;color:rgba(255,255,255,.3);margin-top:8px" id="ti"></p>
+  <button class="btn" id="b3">Начать марафон! 🚀</button>
+  <button class="btn2" onclick="go('s2')">← Назад</button>
+</div>
+
+<div class="scr" id="s4"></div>
+<div class="scr" id="s5"></div>
+
+<div class="ov" id="ov1"><div class="oe">💪</div><div class="oh" id="o1t"></div><div class="os" id="o1s"></div></div>
+<div class="ov" id="ov2"><div class="oe">🎉</div><div class="oh">День выполнен!</div><div class="os" id="o2s"></div></div>
+
+<script>
+const M={
+  "10x10":{s:10,r:10,l:"10 × 10",e:"🌿",d:"Новичок"},
+  "5x20":{s:5,r:20,l:"5 × 20",e:"🌱",d:"Лёгкий"},
+  "4x25":{s:4,r:25,l:"4 × 25",e:"💪",d:"Средний"},
+  "2x50":{s:2,r:50,l:"2 × 50",e:"🔥",d:"Сложный"},
+  "1x100":{s:1,r:100,l:"1 × 100",e:"⚡",d:"Профи"}
+};
+
+const DC=[
+{t:"Привет, красотка! Ты только что включила в работу более 200 мышц одновременно! Квадрицепсы, ягодицы, бицепс бедра, пресс - всё проснулось. Твоя попа получила первый мощный сигнал: «Пора подтягиваться!» Внешне пока ничего не видно, но внутри уже запущены процессы регенерации, которые тебя удивят."},
+{t:"Если мышцы немного ноют - поздравляю, это значит, что мышцы реально работали! Крепатура - это микроповреждения волокон, после которых мышцы восстанавливаются и становятся ещё сильнее и более упругими. Кровообращение в тазу усилилось - это полезно для гормонального фона, кожи и женского здоровья."},
+{t:"Тело начинает привыкать - движения более уверенные, приседать становится легче. Мозг выстраивает нейромышечные связи с ягодицами, а значит, с каждым днём ты активируешь их всё лучше. Улучшается микроциркуляция в коже бёдер и попы, клетки получают больше питания. Это фундамент для гладкой и упругой кожи."},
+{t:"Связки и суставы укрепляются. Метаболизм становится быстрее - ты сжигаешь больше калорий, даже когда просто сидишь, так как мышечная ткань требует много энергии на восстановление. Потрогай свои ягодицы - они уже ощущаются плотнее и упругее, чем 4 дня назад! Так мышцы приходят в тонус."},
+{t:"Организм вырабатывает больше гормона роста и эндорфинов - ты чувствуешь себя бодрее и счастливее. Мышцы ягодиц тонизируются и буквально «подтягивают» всё вверх. Первые комплименты могут прилететь уже скоро."},
+{t:"Осанка выравнивается - ты стоишь ровнее и выглядишь стройнее. Ноги в зеркале кажутся более подтянутыми - не потому что ушёл жир, а потому что мышцы пришли в тонус и «собрали» силуэт. Даже привычные джинсы могут сесть по-другому!"},
+{t:"Неделя! Ты большая умница! Тазобедренные суставы стали более подвижнее, баланс у тела лучше. А вот что видно в зеркале: внутренняя поверхность бёдер подтянулась, ягодицы округлились. Кожа на ногах выглядит более гладкой - усиленный кровоток и лимфодренаж делают своё дело. Целлюлит начинает сдавать позиции."},
+{t:"Тот же объём приседаний даётся легче - это значит, что мышцы окрепли! Попа начинает выглядеть более «круглой» - это та самая форма, когда ягодицы визуально отделяются от задней поверхности бедра. Линия бедра сбоку стала более рельефной."},
+{t:"Твоё тело теперь сжигает калории активнее даже в покое - мышечная ткань требует больше энергии. Окружающие начинают замечать изменения: «Ты что-то делаешь? Выглядишь свежее!» Приятно, правда?"},
+{t:"Стресс снижается, энергии больше, настроение стабильно хорошее - спасибо эндорфинам! Кожа на бёдрах и ягодицах заметно более упругая и гладкая. Укреплённые мышцы создают ровную основу под кожей - бугорки целлюлита визуально сглаживаются."},
+{t:"Отёчность ног уменьшается - лимфоток работает мощнее. Ноги выглядят «суше» и стройнее, щиколотки тоньше. Сердце натренировалось - пульс при нагрузке ниже. А твоя попа уже заметно отличается от той, что была 11 дней назад - она круглее, выше и плотнее."},
+{t:"Ягодицы заметно приподнялись и округлились - это видно и в зеркале, и в одежде. Брюки и юбки сидят совсем иначе. Костная ткань стала плотнее - ты инвестируешь в здоровье на годы вперёд. Талия кажется тоньше, потому что бёдра и попа стали рельефнее - красивая пропорция!"},
+{t:"Предпоследний день! Вспомни, как тяжело было в день 1, а сейчас это лёгкая разминка. Сила ног выросла минимум на 20%! Твоё тело в зеркале - более подтянутое, стройное, с красивым рельефом. Ты буквально лепишь себя приседаниями."},
+{t:"ТЫ СДЕЛАЛА ЭТО! 1400 приседаний за 14 дней. Посмотри на себя: подтянутые ноги, приподнятая округлая попа, гладкая кожа на бёдрах, ровная осанка, стройный силуэт. Внутри - ускоренный метаболизм, крепкие кости, здоровый гормональный фон и железная сила воли. Ты - другой человек.\nСегодня ты обязательно сделаешь свой личный рекорд 100 раз за раз.\nТвоё тело готово!"}
+];
+
+const BRAND={ig:"https://www.instagram.com/ytka___love/",tg:"https://t.me/privivka_zozh",web:"https://ytka-health.online/chistoe_telo"};
+let S=null,selMode=null;
+const tg=window.Telegram?.WebApp;
+const API=window.location.origin;
+let userId=null;
+
+function save(){try{localStorage.setItem('sqm',JSON.stringify(S))}catch(e){}}
+function load(){try{const s=localStorage.getItem('sqm');if(s){S=JSON.parse(s);return true}}catch(e){}return false}
+function gd(){const s=new Date(S.sd),n=new Date;s.setHours(0,0,0,0);n.setHours(0,0,0,0);return Math.floor((n-s)/864e5)+1}
+function streak(){const d=Math.min(gd(),14);let s=0;for(let i=d;i>=1;i--){if(S.days[i]?.c)s++;else break}return s}
+function pts(){const sq=Object.values(S.days).filter(d=>d.c).length;return{sq,ig:S.ip||0,t:sq+(S.ip||0)}}
+function go(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0)}
+
+// S1: Name
+const ni=document.getElementById('ni'),b1=document.getElementById('b1');
+ni.addEventListener('input',()=>b1.disabled=!ni.value.trim());
+ni.addEventListener('keydown',e=>{if(e.key==='Enter'&&ni.value.trim())b1.click()});
+b1.onclick=()=>{if(ni.value.trim()){buildModes();go('s2')}};
+
+// S2: Mode
+function buildModes(){
+  const g=document.getElementById('mg');let h='';
+  for(const[id,m]of Object.entries(M)){
+    h+=`<div class="mc" data-m="${id}" onclick="pickMode('${id}')"><div class="me">${m.e}</div><div class="mi"><div class="ml">${m.l}</div><div class="md">${m.s} подх. по ${m.r}</div></div><div class="df">${m.d}</div><div class="ck"></div></div>`;
+  }
+  g.innerHTML=h;
+}
+function pickMode(id){selMode=id;document.querySelectorAll('.mc').forEach(c=>c.classList.toggle('sel',c.dataset.m===id));document.getElementById('b2').disabled=false}
+document.getElementById('b2').onclick=()=>{if(selMode){buildTimes();go('s3')}};
+
+// S3: Times
+function buildTimes(){
+  const m=M[selMode],c=document.getElementById('ts'),info=document.getElementById('ti');
+  const def=["08:00","10:00","12:00","14:00","16:00","18:00","19:00","20:00","21:00","22:00"];
+  let h='';for(let i=0;i<m.s;i++){h+=`<div class="tsl"><div class="tl">Подход ${i+1}</div><input type="time" id="t${i}" value="${def[i]||'12:00'}"></div>`}
+  c.innerHTML=h;
+  info.innerHTML=`${m.s} напоминаний в день — по одному на подход`;
+}
+document.getElementById('b3').onclick=()=>{
+  const m=M[selMode],times=[];
+  for(let i=0;i<m.s;i++){const v=document.getElementById('t'+i);times.push(v.value||'08:00')}
+  const days={};for(let d=1;d<=14;d++)days[d]={sd:Array(m.s).fill(false),c:false};
+  S={n:ni.value.trim(),m:selMode,sd:new Date().toISOString().split('T')[0],rt:times.sort(),days,ip:0};
+  save();render();go('s4');
+};
+
+// S4: Tracker
+function render(){
+  const el=document.getElementById('s4'),day=Math.min(gd(),15),m=M[S.m],p=pts(),sk=streak(),pct=Math.round(p.sq/14*100),off=402-402*pct/100;
+  if(day>14){el.innerHTML=renderDone(p,sk);return}
+  const dd=S.days[day]||{sd:Array(m.s).fill(false),c:false},sd=dd.sd.filter(Boolean).length,ct=DC[day-1];
+  el.innerHTML=`
+<div class="hdr"><h1>100 раз за раз</h1><div class="ug">${S.n}</div><div class="br">🦆 Утка Лав</div></div>
+<div style="text-align:center;margin:6px 0"><span class="mbdg" onclick="goSettings()">${m.e} ${m.l} — ${m.d} ⚙️</span></div>
+<div class="ds"><div class="dn">${day}</div><div class="dm"><div class="dl">День</div><div class="dt">из 14</div></div></div>
+<div class="sr"><div class="sb s1"><div class="sv">${sk}🔥</div><div class="sl">Серия</div></div><div class="sb s2"><div class="sv">${p.sq}</div><div class="sl">Дней</div></div><div class="sb s3"><div class="sv">${p.sq*100}</div><div class="sl">Присед</div></div><div class="sb s4"><div class="sv">${p.t}⭐</div><div class="sl">Баллы</div></div></div>
+<div class="rw"><div class="rc"><svg class="rs" viewBox="0 0 150 150"><circle class="rb" cx="75" cy="75" r="64"/><circle class="rf" cx="75" cy="75" r="64" id="ring" style="stroke-dashoffset:402"/></svg><div class="rt"><div class="rp">${pct}%</div><div class="rl">марафона</div></div></div></div>
+<div class="ss"><div class="sh">Подходы — ${sd} из ${m.s}</div><div class="sf">${dd.sd.map((done,i)=>{const nx=i===dd.sd.indexOf(false);return`<div class="sbt ${done?'dn2':''} ${nx&&!done?'nx':''}" onclick="markS(${day},${i})"><div class="sn">${i+1}</div><div class="srp">${m.r}</div></div>`}).join('')}</div></div>
+${dd.c?`<button class="ab done" disabled>✨ Все подходы выполнены!</button>`:`<button class="ab" onclick="markN(${day})">✅ Отметить подход ${sd+1}</button>`}
+<div class="ig-box"><div class="ig-ico">📸</div><div class="ig-text"><div class="ig-title">Бонусный балл!</div><div class="ig-desc">Опубликуй сторис/пост с отметкой <strong>@ytka___love</strong> и отправь скриншот</div></div><button class="ig-btn" onclick="sendScreenshot()">Отправить скриншот →</button></div>
+<div class="cc c1"><div class="ci">🌅</div><div class="ct">День ${day} из 14</div><div class="cx">${ct.t.replace(/\n/g,'<br>')}</div></div>
+<div class="lnk"><div class="lt">🦆 Утка Лав</div><a href="${BRAND.ig}" target="_blank">📷 Instagram</a><a href="${BRAND.tg}" target="_blank">💬 Telegram</a><a href="${BRAND.web}" target="_blank">🌐 Курс «Чистое тело»</a></div>
+<div class="cal"><div class="clt">Календарь</div><div class="clg">${bCal(day)}</div></div>
+<button class="stb" onclick="goSettings()">⚙️ Настройки</button>`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{const r=document.getElementById('ring');if(r)r.style.strokeDashoffset=off}));
+}
+
+function bCal(cd){let h='';for(let d=1;d<=14;d++){let c='';const dd=S.days[d];if(d===Math.min(cd,14))c+=' ct2';if(dd?.c)c+=' cd';else if(d<cd)c+=' cm';else if(d>cd)c+=' cf';h+=`<div class="cld${c}">${d}</div>`}return h}
+
+function renderDone(p,sk){return`<div class="hdr"><h1>100 раз за раз</h1><div class="br">🦆 Утка Лав</div></div><div style="text-align:center;padding:30px 10px"><div style="font-size:72px">🏆</div><h2 style="font-family:'Orbitron';font-size:20px;background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:12px 0">МАРАФОН ЗАВЕРШЁН!</h2><p style="color:rgba(255,255,255,.5);font-size:14px;line-height:1.7"><strong style="color:#fff">${S.n}</strong>, ты невероятна!<br><br>Приседаний: <strong style="color:#fff">${p.sq*100}</strong><br>Баллов: <strong style="color:#fff">${p.t}</strong> ⭐<br>Серия: <strong style="color:#fff">${sk}</strong> дней</p></div><div class="lnk"><div class="lt">🦆 Утка Лав</div><a href="${BRAND.ig}" target="_blank">📷 Instagram</a><a href="${BRAND.tg}" target="_blank">💬 Telegram</a><a href="${BRAND.web}" target="_blank">🌐 Курс «Чистое тело»</a></div><div class="cal"><div class="clt">Твой путь</div><div class="clg">${bCal(15)}</div></div><button class="stb" onclick="goSettings()">⚙️ Настройки</button>`}
+
+// Mark sets
+function markS(day,i){const dd=S.days[day];if(!dd||dd.sd[i])return;for(let j=0;j<i;j++)if(!dd.sd[j])return;
+dd.sd[i]=true;const m=M[S.m],sd=dd.sd.filter(Boolean).length;
+try{tg?.HapticFeedback?.impactOccurred('medium')}catch(e){}
+if(dd.sd.every(Boolean)){dd.c=true;save();render();setTimeout(()=>{const o=document.getElementById('ov2');document.getElementById('o2s').textContent=day===14?'🏆 МАРАФОН ЗАВЕРШЁН!':'Все подходы сделаны! +1 балл ⭐';o.classList.add('sh');confetti();try{tg?.HapticFeedback?.notificationOccurred('success')}catch(e){}setTimeout(()=>{o.classList.remove('sh');if(day===14)render()},2500)},200)}
+else{save();const o=document.getElementById('ov1');document.getElementById('o1t').textContent=`Подход ${sd}!`;document.getElementById('o1s').textContent=`Осталось ${m.s-sd} из ${m.s}`;o.classList.add('sh');setTimeout(()=>{o.classList.remove('sh');render()},1e3)}}
+
+function markN(day){const dd=S.days[day];if(!dd)return;const n=dd.sd.indexOf(false);if(n!==-1)markS(day,n)}
+
+function confetti(){const c=['#ff2d78','#00f0ff','#b44dff','#39ff14','#ff6b35','#ffe600'];for(let i=0;i<50;i++){const p=document.createElement('div');p.className='cf2';p.style.left=Math.random()*100+'vw';p.style.background=c[Math.floor(Math.random()*c.length)];p.style.animationDelay=Math.random()*.5+'s';p.style.animationDuration=(2+Math.random()*2)+'s';p.style.width=(4+Math.random()*8)+'px';p.style.height=(4+Math.random()*8)+'px';document.body.appendChild(p);setTimeout(()=>p.remove(),4e3)}}
+
+// Settings
+function goSettings(){renderSettings();go('s5')}
+function renderSettings(){
+  const el=document.getElementById('s5'),m=M[S.m];
+  el.innerHTML=`<div class="logo" style="margin:16px 0"><span class="e">⚙️</span><h1 style="font-size:18px">Настройки</h1></div>
+<div class="cc c1"><div class="ct">Профиль</div><div class="cx"><strong>Имя:</strong> ${S.n}<br><strong>Режим:</strong> ${m.e} ${m.l}<br><strong>Напоминания:</strong> ${S.rt.join(', ')}<br><strong>Старт:</strong> ${S.sd}</div></div>
+<button class="btn" style="background:linear-gradient(135deg,var(--cyan),var(--purple))" onclick="render();go('s4')">← Назад к трекеру</button>
+<button class="btn2" onclick="changeMode()">🔄 Сменить режим</button>
+<button class="btn2" onclick="changeTimes()">⏰ Изменить время</button>
+<button class="btn2" onclick="showReset()">🔄 Начать заново</button>
+<div id="ra"></div>`}
+
+function changeMode(){
+  const el=document.getElementById('s5');
+  let h='<div style="margin-top:16px"><div class="mg">';
+  for(const[id,m]of Object.entries(M)){
+    h+=`<div class="mc ${S.m===id?'sel':''}" data-m="${id}" onclick="doChangeMode('${id}')"><div class="me">${m.e}</div><div class="mi"><div class="ml">${m.l}</div><div class="md">${m.s} подх. по ${m.r}</div></div><div class="df">${m.d}</div></div>`}
+  h+='</div></div>';
+  document.getElementById('ra').innerHTML=h;
+}
+
+function doChangeMode(id){
+  const m=M[id];S.m=id;const day=gd();
+  for(let d=Math.max(day,1);d<=14;d++){if(!S.days[d]?.c)S.days[d]={sd:Array(m.s).fill(false),c:false}}
+  // Rebuild reminder times if needed
+  if(S.rt.length!==m.s){
+    const def=["08:00","09:30","11:00","12:30","14:00","15:30","17:00","18:30","20:00","21:30"];
+    S.rt=[];for(let i=0;i<m.s;i++)S.rt.push(def[i]||'12:00');
+  }
+  save();renderSettings();
+}
+
+function changeTimes(){
+  const m=M[S.m];let h='<div style="margin-top:16px"><div class="ts">';
+  for(let i=0;i<S.rt.length;i++){h+=`<div class="tsl"><div class="tl">Подход ${i+1}</div><input type="time" id="nt${i}" value="${S.rt[i]}"></div>`}
+  h+=`</div><button class="btn" onclick="saveTimes()">Сохранить ⏰</button></div>`;
+  document.getElementById('ra').innerHTML=h;
+}
+
+function saveTimes(){
+  const t=[];for(let i=0;i<S.rt.length;i++){const v=document.getElementById('nt'+i);t.push(v.value||'08:00')}
+  S.rt=t.sort();save();renderSettings();
+}
+
+function showReset(){document.getElementById('ra').innerHTML=`<div class="rsc"><p>⚠️ Весь прогресс будет удалён!</p><div class="rr"><button class="rc2" onclick="document.getElementById('ra').innerHTML=''">Отмена</button><button class="rd" onclick="doReset()">Сбросить</button></div></div>`}
+
+function doReset(){localStorage.removeItem('sqm');S=null;selMode=null;ni.value='';b1.disabled=true;document.getElementById('b2').disabled=true;go('s1')}
+
+// Send screenshot - close Mini App and open bot chat
+function sendScreenshot(){
+  if(tg){
+    try{tg.close()}catch(e){}
+  } else {
+    alert('📸 В Telegram: отправь скриншот из Instagram с отметкой @ytka___love прямо в чат с ботом!\n\nБот пришлёт подтверждение, когда админ проверит.');
+  }
+}
+
+// Init
+(function(){
+  if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#0a0a1a');tg.setBackgroundColor('#0a0a1a')}catch(e){}}
+  userId=tg?.initDataUnsafe?.user?.id;
+  if(load()){render();go('s4')}else{const n=tg?.initDataUnsafe?.user?.first_name;if(n)ni.value=n;ni.dispatchEvent(new Event('input'));go('s1')}
+})();
+</script>
+</body>
+</html>
