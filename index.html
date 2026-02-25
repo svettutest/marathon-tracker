@@ -55,17 +55,20 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 /* Tracker */
 .hdr{text-align:center;padding:8px 0 4px}
 .hdr h1{font-family:'Orbitron';font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-transform:uppercase;letter-spacing:2px}
-.hdr .ug{font-size:14px;color:var(--cyan);font-weight:700;margin-top:4px}
-.hdr .br{font-size:11px;color:var(--purple);font-weight:600;margin-top:2px}
-.mbdg{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--purple);cursor:pointer}
+.hdr .ug-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.hdr .av{width:36px;height:36px;border-radius:50%;border:2px solid var(--cyan);object-fit:cover;flex-shrink:0}
+.hdr .av-ph{width:36px;height:36px;border-radius:50%;border:2px solid var(--cyan);background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.hdr .ug{font-size:16px;color:var(--cyan);font-weight:700}
+.hdr .br{font-size:13px;color:var(--purple);font-weight:600;margin-top:2px}
+.mbdg{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:4px 10px;font-size:13px;font-weight:700;color:var(--purple);cursor:pointer}
 .ds{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0}
 .dn{font-family:'Orbitron';font-size:48px;font-weight:900;color:var(--pink);text-shadow:0 0 20px rgba(255,45,120,.5);line-height:1}
-.dm{text-align:left}.dm .dl{font-size:11px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.5px;font-weight:700}.dm .dt{font-size:18px;font-weight:800}
+.dm{text-align:left}.dm .dl{font-size:13px;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:1.5px;font-weight:700}.dm .dt{font-size:18px;font-weight:800}
 
 /* Stats */
 .sr{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:14px 0}
 .sb{background:var(--card);border:1px solid rgba(255,255,255,.04);border-radius:12px;padding:10px 4px;text-align:center}
-.sb .sv{font-family:'Orbitron';font-size:18px;font-weight:700}.sb .sl{font-size:9px;color:rgba(255,255,255,.3);margin-top:2px;text-transform:uppercase;letter-spacing:.3px;font-weight:700}
+.sb .sv{font-family:'Orbitron';font-size:18px;font-weight:700}.sb .sl{font-size:13px;color:rgba(255,255,255,.85);margin-top:2px;text-transform:uppercase;letter-spacing:.3px;font-weight:700}
 .sb.s1 .sv{color:var(--orange)}.sb.s2 .sv{color:var(--cyan)}.sb.s3 .sv{color:var(--green)}.sb.s4 .sv{color:var(--yellow)}
 
 /* Progress ring */
@@ -74,13 +77,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .rs{transform:rotate(-90deg);width:160px;height:160px}
 .rb{fill:none;stroke:rgba(255,255,255,.04);stroke-width:10}.rf{fill:none;stroke:url(#g1);stroke-width:10;stroke-linecap:round;stroke-dasharray:402;stroke-dashoffset:402;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 0 6px rgba(255,45,120,.5))}
 .rt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.rt .rp{font-family:'Orbitron';font-size:32px;font-weight:900}.rt .rl{font-size:10px;color:rgba(255,255,255,.3);font-weight:700}
+.rt .rp{font-family:'Orbitron';font-size:32px;font-weight:900}.rt .rl{font-size:13px;color:rgba(255,255,255,.85);font-weight:700}
 
 /* Sets */
-.ss{margin:18px 0}.sh{text-align:center;font-size:12px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:12px}
+.ss{margin:18px 0}.sh{text-align:center;font-size:13px;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:12px}
 .sf{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .sbt{width:64px;height:64px;border-radius:16px;border:2px solid rgba(255,255,255,.06);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;position:relative;user-select:none}
-.sbt .sn{font-family:'Orbitron';font-size:18px;font-weight:700;color:rgba(255,255,255,.45)}.sbt .srp{font-size:10px;color:rgba(255,255,255,.2)}
+.sbt .sn{font-family:'Orbitron';font-size:18px;font-weight:700;color:rgba(255,255,255,.85)}.sbt .srp{font-size:13px;color:rgba(255,255,255,.7)}
 .sbt:active:not(.dn2){transform:scale(.9)}
 .sbt.nx{border-color:var(--pink);box-shadow:0 0 15px rgba(255,45,120,.3);animation:gp 2s ease-in-out infinite}.sbt.nx .sn{color:var(--pink)}
 @keyframes gp{0%,100%{box-shadow:0 0 8px rgba(255,45,120,.2)}50%{box-shadow:0 0 22px rgba(255,45,120,.5)}}
@@ -96,13 +99,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .cc{background:var(--card);border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:14px 16px;margin:8px 0;position:relative;overflow:hidden}
 .cc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .cc.c1::before{background:linear-gradient(90deg,var(--pink),var(--purple))}
-.cc .ci{font-size:20px;margin-bottom:4px}.cc .ct{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.3);font-weight:700;margin-bottom:4px}
-.cc .cx{font-size:13px;line-height:1.6;color:rgba(255,255,255,.75)}
+.cc .ci{font-size:20px;margin-bottom:4px}.cc .ct{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:4px}
+.cc .cx{font-size:16px;line-height:1.6;color:rgba(255,255,255,.9)}
 
 /* Calendar */
-.cal{margin:20px 0}.clt{text-align:center;font-size:12px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:10px}
+.cal{margin:20px 0}.clt{text-align:center;font-size:13px;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:10px}
 .clg{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.cld{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron';font-size:12px;font-weight:700;background:var(--card);border:1px solid rgba(255,255,255,.03);color:rgba(255,255,255,.2);transition:all .3s}
+.cld{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron';font-size:13px;font-weight:700;background:var(--card);border:1px solid rgba(255,255,255,.03);color:rgba(255,255,255,.5);transition:all .3s}
 .cld.cd{background:rgba(57,255,20,.1);border-color:rgba(57,255,20,.35);color:var(--green)}
 .cld.ct2{border-color:var(--pink);color:var(--pink);box-shadow:0 0 8px rgba(255,45,120,.3)}
 .cld.ct2.cd{border-color:var(--green);color:var(--green);box-shadow:0 0 8px rgba(57,255,20,.3)}
@@ -111,19 +114,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 
 /* Links */
 .lnk{background:var(--card);border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:14px;margin:12px 0;display:flex;flex-direction:column;gap:8px;align-items:center}
-.lnk a{color:var(--cyan);text-decoration:none;font-weight:700;font-size:13px;transition:color .3s}
+.lnk a{color:var(--cyan);text-decoration:none;font-weight:700;font-size:16px;transition:color .3s}
 .lnk a:active{color:var(--pink)}
-.lnk .lt{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.25);font-weight:700}
+.lnk .lt{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.85);font-weight:700}
 
 /* Settings btn */
-.stb{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:var(--card);color:rgba(255,255,255,.4);font-family:'Nunito';font-size:13px;font-weight:700;cursor:pointer;margin-top:10px}
+.stb{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:var(--card);color:rgba(255,255,255,.85);font-family:'Nunito';font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
 
 /* Overlay */
 .ov{position:fixed;inset:0;background:rgba(10,10,26,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .4s}
 .ov.sh{opacity:1;pointer-events:all}
 .ov .oe{font-size:72px;animation:pp .5s cubic-bezier(.175,.885,.32,1.275)}
 .ov .oh{font-family:'Orbitron';font-size:20px;color:var(--green);text-shadow:0 0 20px rgba(57,255,20,.5);margin:14px 0 6px;text-align:center}
-.ov .os{color:rgba(255,255,255,.45);font-size:15px;text-align:center}
+.ov .os{color:rgba(255,255,255,.9);font-size:16px;text-align:center}
 @keyframes pp{0%{transform:scale(0) rotate(-15deg)}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
 
 /* Confetti */
@@ -132,17 +135,17 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 
 /* Reset */
 .rsc{background:var(--card);border:2px solid var(--pink);border-radius:14px;padding:18px;margin:16px 0;text-align:center}
-.rsc p{color:rgba(255,255,255,.6);margin-bottom:14px;font-size:14px}
+.rsc p{color:rgba(255,255,255,.9);margin-bottom:14px;font-size:16px}
 .rsc .rr{display:flex;gap:8px}.rsc .rr button{flex:1;padding:10px;border-radius:10px;border:none;font-family:'Nunito';font-size:13px;font-weight:800;cursor:pointer}
-.rc2{background:var(--card2);color:rgba(255,255,255,.5)}.rd{background:var(--pink);color:#fff}
+.rc2{background:var(--card2);color:rgba(255,255,255,.9)}.rd{background:var(--pink);color:#fff}
 
 /* Instagram box */
 .ig-box{background:linear-gradient(135deg,rgba(193,53,132,.15),rgba(252,175,69,.1));border:1px solid rgba(193,53,132,.3);border-radius:14px;padding:16px;margin:12px 0;text-align:center}
 .ig-ico{font-size:28px;margin-bottom:6px}
 .ig-title{font-family:'Orbitron';font-size:14px;font-weight:700;color:#c135e0;margin-bottom:4px}
-.ig-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:12px}
+.ig-desc{font-size:15px;color:rgba(255,255,255,.9);line-height:1.5;margin-bottom:12px}
 .ig-desc strong{color:#e1306c}
-.ig-btn{display:inline-block;padding:10px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#e1306c,#c135e0);color:#fff;font-family:'Nunito';font-size:13px;font-weight:800;cursor:pointer;transition:all .3s}
+.ig-btn{display:inline-block;padding:10px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#e1306c,#c135e0);color:#fff;font-family:'Nunito';font-size:16px;font-weight:800;cursor:pointer;transition:all .3s}
 .ig-btn:active{transform:scale(.95)}
 
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:0 0}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.06);border-radius:2px}
@@ -208,7 +211,7 @@ const BRAND={ig:"https://www.instagram.com/ytka___love/",tg:"https://t.me/priviv
 let S=null,selMode=null;
 const tg=window.Telegram?.WebApp;
 const API='https://worker-production-7f08.up.railway.app';
-let userId=null;
+let userId=null,userPhoto=null;
 
 function save(){try{localStorage.setItem('sqm',JSON.stringify(S))}catch(e){}}
 function load(){try{const s=localStorage.getItem('sqm');if(s){S=JSON.parse(s);return true}}catch(e){}return false}
@@ -279,7 +282,7 @@ function render(){
   if(day>14){el.innerHTML=renderDone(p,sk);return}
   const dd=S.days[day]||{sd:Array(m.s).fill(false),c:false},sd=dd.sd.filter(Boolean).length,ct=DC[day-1];
   el.innerHTML=`
-<div class="hdr"><h1>100 раз за раз</h1><div class="ug">${S.n}</div><div class="br">🦆 Утка Лав</div></div>
+<div class="hdr"><h1>100 раз за раз</h1><div class="ug-row">${userPhoto?`<img class="av" src="${userPhoto}" alt="">`:`<div class="av-ph">🦆</div>`}<span class="ug">${S.n}</span></div><div class="br">🦆 Утка Лав</div></div>
 <div style="text-align:center;margin:6px 0"><span class="mbdg" onclick="goSettings()">${m.e} ${m.l} — ${m.d} ⚙️</span></div>
 <div class="ds"><div class="dn">${day}</div><div class="dm"><div class="dl">День</div><div class="dt">из 14</div></div></div>
 <div class="sr"><div class="sb s1"><div class="sv">${sk}🔥</div><div class="sl">Серия</div></div><div class="sb s2"><div class="sv">${p.sq}</div><div class="sl">Дней</div></div><div class="sb s3"><div class="sv">${p.sq*100}</div><div class="sl">Присед</div></div><div class="sb s4"><div class="sv">${p.t}⭐</div><div class="sl">Баллы</div></div></div>
@@ -296,7 +299,7 @@ ${dd.c?`<button class="ab done" disabled>✨ Все подходы выполн�
 
 function bCal(cd){let h='';for(let d=1;d<=14;d++){let c='';const dd=S.days[d];if(d===Math.min(cd,14))c+=' ct2';if(dd?.c)c+=' cd';else if(d<cd)c+=' cm';else if(d>cd)c+=' cf';h+=`<div class="cld${c}">${d}</div>`}return h}
 
-function renderDone(p,sk){return`<div class="hdr"><h1>100 раз за раз</h1><div class="br">🦆 Утка Лав</div></div><div style="text-align:center;padding:30px 10px"><div style="font-size:72px">🏆</div><h2 style="font-family:'Orbitron';font-size:20px;background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:12px 0">МАРАФОН ЗАВЕРШЁН!</h2><p style="color:rgba(255,255,255,.5);font-size:14px;line-height:1.7"><strong style="color:#fff">${S.n}</strong>, ты невероятна!<br><br>Приседаний: <strong style="color:#fff">${p.sq*100}</strong><br>Баллов: <strong style="color:#fff">${p.t}</strong> ⭐<br>Серия: <strong style="color:#fff">${sk}</strong> дней</p></div><div class="lnk"><div class="lt">🦆 Утка Лав</div><a href="${BRAND.ig}" target="_blank">📷 Instagram</a><a href="${BRAND.tg}" target="_blank">💬 Telegram</a><a href="${BRAND.web}" target="_blank">🌐 Курс «Чистое тело»</a></div><div class="cal"><div class="clt">Твой путь</div><div class="clg">${bCal(15)}</div></div><button class="stb" onclick="goSettings()">⚙️ Настройки</button>`}
+function renderDone(p,sk){return`<div class="hdr"><h1>100 раз за раз</h1><div class="br">🦆 Утка Лав</div></div><div style="text-align:center;padding:30px 10px"><div style="font-size:72px">🏆</div><h2 style="font-family:'Orbitron';font-size:20px;background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:12px 0">МАРАФОН ЗАВЕРШЁН!</h2><p style="color:rgba(255,255,255,.9);font-size:16px;line-height:1.7"><strong style="color:#fff">${S.n}</strong>, ты невероятна!<br><br>Приседаний: <strong style="color:#fff">${p.sq*100}</strong><br>Баллов: <strong style="color:#fff">${p.t}</strong> ⭐<br>Серия: <strong style="color:#fff">${sk}</strong> дней</p></div><div class="lnk"><div class="lt">🦆 Утка Лав</div><a href="${BRAND.ig}" target="_blank">📷 Instagram</a><a href="${BRAND.tg}" target="_blank">💬 Telegram</a><a href="${BRAND.web}" target="_blank">🌐 Курс «Чистое тело»</a></div><div class="cal"><div class="clt">Твой путь</div><div class="clg">${bCal(15)}</div></div><button class="stb" onclick="goSettings()">⚙️ Настройки</button>`}
 
 // Mark sets
 function markS(day,i){const dd=S.days[day];if(!dd||dd.sd[i])return;for(let j=0;j<i;j++)if(!dd.sd[j])return;
@@ -370,6 +373,7 @@ function sendScreenshot(){
 (async function(){
   if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#0a0a1a');tg.setBackgroundColor('#0a0a1a')}catch(e){}}
   userId=tg?.initDataUnsafe?.user?.id;
+  userPhoto=tg?.initDataUnsafe?.user?.photo_url||null;
 
   // Try to load from server first
   if(userId){
