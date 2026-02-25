@@ -145,6 +145,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .ig-btn{display:inline-block;padding:10px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#e1306c,#c135e0);color:#fff;font-family:'Nunito';font-size:13px;font-weight:800;cursor:pointer;transition:all .3s}
 .ig-btn:active{transform:scale(.95)}
 
+/* Avatar */
+.av{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--pink),var(--purple));box-shadow:0 0 12px rgba(255,45,120,.3);vertical-align:middle;overflow:hidden;user-select:none}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.av-sm{width:36px;height:36px;font-size:15px}
+.hdr .av-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px}
+
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:0 0}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.06);border-radius:2px}
 </style>
 </head>
@@ -209,6 +215,14 @@ let S=null,selMode=null;
 const tg=window.Telegram?.WebApp;
 const API='https://worker-production-7f08.up.railway.app';
 let userId=null;
+let userPhoto=tg?.initDataUnsafe?.user?.photo_url||null;
+
+function avatarHTML(name,cls){
+  const c=cls?' '+cls:'';
+  const letter=(name||'?').charAt(0).toUpperCase();
+  if(userPhoto)return`<div class="av${c}"><img src="${userPhoto}" alt="" onerror="this.parentNode.innerHTML='${letter}';userPhoto=null"></div>`;
+  return`<div class="av${c}">${letter}</div>`;
+}
 
 function save(){try{localStorage.setItem('sqm',JSON.stringify(S))}catch(e){}}
 function load(){try{const s=localStorage.getItem('sqm');if(s){S=JSON.parse(s);return true}}catch(e){}return false}
@@ -279,7 +293,7 @@ function render(){
   if(day>14){el.innerHTML=renderDone(p,sk);return}
   const dd=S.days[day]||{sd:Array(m.s).fill(false),c:false},sd=dd.sd.filter(Boolean).length,ct=DC[day-1];
   el.innerHTML=`
-<div class="hdr"><h1>100 раз за раз</h1><div class="ug">${S.n}</div><div class="br">🦆 Утка Лав</div></div>
+<div class="hdr"><h1>100 раз за раз</h1><div class="av-row">${avatarHTML(S.n)}<div class="ug">${S.n}</div></div><div class="br">🦆 Утка Лав</div></div>
 <div style="text-align:center;margin:6px 0"><span class="mbdg" onclick="goSettings()">${m.e} ${m.l} — ${m.d} ⚙️</span></div>
 <div class="ds"><div class="dn">${day}</div><div class="dm"><div class="dl">День</div><div class="dt">из 14</div></div></div>
 <div class="sr"><div class="sb s1"><div class="sv">${sk}🔥</div><div class="sl">Серия</div></div><div class="sb s2"><div class="sv">${p.sq}</div><div class="sl">Дней</div></div><div class="sb s3"><div class="sv">${p.sq*100}</div><div class="sl">Присед</div></div><div class="sb s4"><div class="sv">${p.t}⭐</div><div class="sl">Баллы</div></div></div>
@@ -296,7 +310,7 @@ ${dd.c?`<button class="ab done" disabled>✨ Все подходы выполн�
 
 function bCal(cd){let h='';for(let d=1;d<=14;d++){let c='';const dd=S.days[d];if(d===Math.min(cd,14))c+=' ct2';if(dd?.c)c+=' cd';else if(d<cd)c+=' cm';else if(d>cd)c+=' cf';h+=`<div class="cld${c}">${d}</div>`}return h}
 
-function renderDone(p,sk){return`<div class="hdr"><h1>100 раз за раз</h1><div class="br">🦆 Утка Лав</div></div><div style="text-align:center;padding:30px 10px"><div style="font-size:72px">🏆</div><h2 style="font-family:'Orbitron';font-size:20px;background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:12px 0">МАРАФОН ЗАВЕРШЁН!</h2><p style="color:rgba(255,255,255,.5);font-size:14px;line-height:1.7"><strong style="color:#fff">${S.n}</strong>, ты невероятна!<br><br>Приседаний: <strong style="color:#fff">${p.sq*100}</strong><br>Баллов: <strong style="color:#fff">${p.t}</strong> ⭐<br>Серия: <strong style="color:#fff">${sk}</strong> дней</p></div><div class="lnk"><div class="lt">🦆 Утка Лав</div><a href="${BRAND.ig}" target="_blank">📷 Instagram</a><a href="${BRAND.tg}" target="_blank">💬 Telegram</a><a href="${BRAND.web}" target="_blank">🌐 Курс «Чистое тело»</a></div><div class="cal"><div class="clt">Твой путь</div><div class="clg">${bCal(15)}</div></div><button class="stb" onclick="goSettings()">⚙️ Настройки</button>`}
+function renderDone(p,sk){return`<div class="hdr"><h1>100 раз за раз</h1><div class="br">🦆 Утка Лав</div></div><div style="text-align:center;padding:30px 10px"><div style="font-size:72px">🏆</div><h2 style="font-family:'Orbitron';font-size:20px;background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:12px 0">МАРАФОН ЗАВЕРШЁН!</h2><div style="margin:12px auto">${avatarHTML(S.n)}</div><p style="color:rgba(255,255,255,.5);font-size:14px;line-height:1.7"><strong style="color:#fff">${S.n}</strong>, ты невероятна!<br><br>Приседаний: <strong style="color:#fff">${p.sq*100}</strong><br>Баллов: <strong style="color:#fff">${p.t}</strong> ⭐<br>Серия: <strong style="color:#fff">${sk}</strong> дней</p></div><div class="lnk"><div class="lt">🦆 Утка Лав</div><a href="${BRAND.ig}" target="_blank">📷 Instagram</a><a href="${BRAND.tg}" target="_blank">💬 Telegram</a><a href="${BRAND.web}" target="_blank">🌐 Курс «Чистое тело»</a></div><div class="cal"><div class="clt">Твой путь</div><div class="clg">${bCal(15)}</div></div><button class="stb" onclick="goSettings()">⚙️ Настройки</button>`}
 
 // Mark sets
 function markS(day,i){const dd=S.days[day];if(!dd||dd.sd[i])return;for(let j=0;j<i;j++)if(!dd.sd[j])return;
@@ -315,7 +329,7 @@ function goSettings(){renderSettings();go('s5')}
 function renderSettings(){
   const el=document.getElementById('s5'),m=M[S.m];
   el.innerHTML=`<div class="logo" style="margin:16px 0"><span class="e">⚙️</span><h1 style="font-size:18px">Настройки</h1></div>
-<div class="cc c1"><div class="ct">Профиль</div><div class="cx"><strong>Имя:</strong> ${S.n}<br><strong>Режим:</strong> ${m.e} ${m.l}<br><strong>Напоминания:</strong> ${S.rt.join(', ')}<br><strong>Старт:</strong> ${S.sd}</div></div>
+<div class="cc c1"><div class="ct">Профиль</div><div class="cx" style="display:flex;align-items:center;gap:12px">${avatarHTML(S.n)}<div><strong>Имя:</strong> ${S.n}<br><strong>Режим:</strong> ${m.e} ${m.l}<br><strong>Напоминания:</strong> ${S.rt.join(', ')}<br><strong>Старт:</strong> ${S.sd}</div></div></div>
 <button class="btn" style="background:linear-gradient(135deg,var(--cyan),var(--purple))" onclick="render();go('s4')">← Назад к трекеру</button>
 <button class="btn2" onclick="changeMode()">🔄 Сменить режим</button>
 <button class="btn2" onclick="changeTimes()">⏰ Изменить время</button>
