@@ -207,11 +207,28 @@ const DC=[
 const BRAND={ig:"https://www.instagram.com/ytka___love/",tg:"https://t.me/privivka_zozh",web:"https://ytka-health.online/chistoe_telo"};
 let S=null,selMode=null;
 const tg=window.Telegram?.WebApp;
-const API=window.location.origin;
+const API='https://worker-production-7f08.up.railway.app';
 let userId=null;
 
 function save(){try{localStorage.setItem('sqm',JSON.stringify(S))}catch(e){}}
 function load(){try{const s=localStorage.getItem('sqm');if(s){S=JSON.parse(s);return true}}catch(e){}return false}
+
+// API sync functions
+async function apiGet(uid){
+  try{const r=await fetch(`${API}/api/user?id=${uid}`);if(r.ok)return await r.json();return null}catch(e){console.log('API get err',e);return null}
+}
+async function apiRegister(uid,name,mode,time,tgUser){
+  try{const r=await fetch(`${API}/api/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,name,mode,reminder_time:time,tg_username:tgUser||''})});if(r.ok)return await r.json();return null}catch(e){console.log('API reg err',e);return null}
+}
+async function apiMarkSet(uid,day,setIndex){
+  try{fetch(`${API}/api/mark_set`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,day,set_index:setIndex})})}catch(e){}
+}
+async function apiChangeMode(uid,mode){
+  try{fetch(`${API}/api/change_mode`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,mode})})}catch(e){}
+}
+async function apiChangeReminder(uid,time){
+  try{fetch(`${API}/api/change_reminder`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:uid,time})})}catch(e){}
+}
 function gd(){const s=new Date(S.sd),n=new Date;s.setHours(0,0,0,0);n.setHours(0,0,0,0);return Math.floor((n-s)/864e5)+1}
 function streak(){const d=Math.min(gd(),14);let s=0;for(let i=d;i>=1;i--){if(S.days[i]?.c)s++;else break}return s}
 function pts(){const sq=Object.values(S.days).filter(d=>d.c).length;return{sq,ig:S.ip||0,t:sq+(S.ip||0)}}
@@ -242,12 +259,18 @@ function buildTimes(){
   c.innerHTML=h;
   info.innerHTML=`${m.s} напоминаний в день — по одному на подход`;
 }
-document.getElementById('b3').onclick=()=>{
+document.getElementById('b3').onclick=async()=>{
   const m=M[selMode],times=[];
   for(let i=0;i<m.s;i++){const v=document.getElementById('t'+i);times.push(v.value||'08:00')}
   const days={};for(let d=1;d<=14;d++)days[d]={sd:Array(m.s).fill(false),c:false};
   S={n:ni.value.trim(),m:selMode,sd:new Date().toISOString().split('T')[0],rt:times.sort(),days,ip:0};
-  save();render();go('s4');
+  save();
+  // Register on server
+  if(userId){
+    const tgUser=tg?.initDataUnsafe?.user?.username||'';
+    apiRegister(userId,S.n,selMode,times[0],tgUser);
+  }
+  render();go('s4');
 };
 
 // S4: Tracker
@@ -278,6 +301,7 @@ function renderDone(p,sk){return`<div class="hdr"><h1>100 раз за раз</h1
 // Mark sets
 function markS(day,i){const dd=S.days[day];if(!dd||dd.sd[i])return;for(let j=0;j<i;j++)if(!dd.sd[j])return;
 dd.sd[i]=true;const m=M[S.m],sd=dd.sd.filter(Boolean).length;
+if(userId)apiMarkSet(userId,day,i);
 try{tg?.HapticFeedback?.impactOccurred('medium')}catch(e){}
 if(dd.sd.every(Boolean)){dd.c=true;save();render();setTimeout(()=>{const o=document.getElementById('ov2');document.getElementById('o2s').textContent=day===14?'🏆 МАРАФОН ЗАВЕРШЁН!':'Все подходы сделаны! +1 балл ⭐';o.classList.add('sh');confetti();try{tg?.HapticFeedback?.notificationOccurred('success')}catch(e){}setTimeout(()=>{o.classList.remove('sh');if(day===14)render()},2500)},200)}
 else{save();const o=document.getElementById('ov1');document.getElementById('o1t').textContent=`Подход ${sd}!`;document.getElementById('o1s').textContent=`Осталось ${m.s-sd} из ${m.s}`;o.classList.add('sh');setTimeout(()=>{o.classList.remove('sh');render()},1e3)}}
@@ -310,12 +334,11 @@ function changeMode(){
 function doChangeMode(id){
   const m=M[id];S.m=id;const day=gd();
   for(let d=Math.max(day,1);d<=14;d++){if(!S.days[d]?.c)S.days[d]={sd:Array(m.s).fill(false),c:false}}
-  // Rebuild reminder times if needed
   if(S.rt.length!==m.s){
     const def=["08:00","09:30","11:00","12:30","14:00","15:30","17:00","18:30","20:00","21:30"];
     S.rt=[];for(let i=0;i<m.s;i++)S.rt.push(def[i]||'12:00');
   }
-  save();renderSettings();
+  save();if(userId)apiChangeMode(userId,id);renderSettings();
 }
 
 function changeTimes(){
@@ -327,12 +350,12 @@ function changeTimes(){
 
 function saveTimes(){
   const t=[];for(let i=0;i<S.rt.length;i++){const v=document.getElementById('nt'+i);t.push(v.value||'08:00')}
-  S.rt=t.sort();save();renderSettings();
+  S.rt=t.sort();save();if(userId)apiChangeReminder(userId,t[0]);renderSettings();
 }
 
 function showReset(){document.getElementById('ra').innerHTML=`<div class="rsc"><p>⚠️ Весь прогресс будет удалён!</p><div class="rr"><button class="rc2" onclick="document.getElementById('ra').innerHTML=''">Отмена</button><button class="rd" onclick="doReset()">Сбросить</button></div></div>`}
 
-function doReset(){localStorage.removeItem('sqm');S=null;selMode=null;ni.value='';b1.disabled=true;document.getElementById('b2').disabled=true;go('s1')}
+function doReset(){localStorage.removeItem('sqm');S=null;selMode=null;ni.value='';b1.disabled=true;document.getElementById('b2').disabled=true;go('s1');const n=tg?.initDataUnsafe?.user?.first_name;if(n){ni.value=n;ni.dispatchEvent(new Event('input'))}}
 
 // Send screenshot - close Mini App and open bot chat
 function sendScreenshot(){
@@ -344,10 +367,34 @@ function sendScreenshot(){
 }
 
 // Init
-(function(){
+(async function(){
   if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#0a0a1a');tg.setBackgroundColor('#0a0a1a')}catch(e){}}
   userId=tg?.initDataUnsafe?.user?.id;
-  if(load()){render();go('s4')}else{const n=tg?.initDataUnsafe?.user?.first_name;if(n)ni.value=n;ni.dispatchEvent(new Event('input'));go('s1')}
+
+  // Try to load from server first
+  if(userId){
+    const srv=await apiGet(userId);
+    if(srv && srv.setup_step==='done'){
+      // Build local state from server data
+      const mode=srv.mode||'4x25';
+      const m=M[mode];
+      const days={};
+      for(let d=1;d<=14;d++){
+        const sd_data=srv.days?.[String(d)];
+        if(sd_data){
+          days[d]={sd:sd_data.sets_done||Array(m.s).fill(false),c:sd_data.completed||false};
+        } else {
+          days[d]={sd:Array(m.s).fill(false),c:false};
+        }
+      }
+      S={n:srv.name,m:mode,sd:srv.start_date,rt:srv.reminder_times||['09:00'],days,ip:srv.instagram_points||0};
+      save();render();go('s4');return;
+    }
+  }
+
+  // Fallback to localStorage
+  if(load()){render();go('s4')}
+  else{const n=tg?.initDataUnsafe?.user?.first_name;if(n)ni.value=n;ni.dispatchEvent(new Event('input'));go('s1')}
 })();
 </script>
 </body>
