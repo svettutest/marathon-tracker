@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Утка Лав — Презентация курса</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #faf7f2, #e8e0d5); min-height: 100vh; padding: 16px; }
+.wrap { max-width: 420px; margin: 0 auto; }
+.header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #fff; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 16px; }
+.logo { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #6b8e5a, #8baa7a); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700; }
+.hinfo { margin-left: 10px; }
+.hname { font-size: 14px; font-weight: 600; color: #2d2a26; }
+.hsub { font-size: 11px; color: #8a8279; }
+.counter { font-size: 12px; color: #6b8e5a; font-weight: 700; background: #f0f7ec; padding: 4px 10px; border-radius: 8px; }
+.dots { display: flex; justify-content: center; gap: 4px; margin-bottom: 16px; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: #d4cdc4; cursor: pointer; transition: all 0.3s; }
+.dot.active { width: 20px; background: #6b8e5a; }
+.dot.done { background: #6b8e5a; }
+.tabs { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 4px; }
+.tab { padding: 6px 12px; border: none; border-radius: 20px; font-size: 11px; font-weight: 500; background: #e8e0d5; color: #8a8279; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.tab.active { font-weight: 700; background: #6b8e5a; color: #fff; }
+.screen { display: none; }
+.screen.active { display: block; }
+.btn { width: 100%; padding: 15px 20px; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; background: linear-gradient(135deg, #6b8e5a, #8baa7a); color: #fff; cursor: pointer; box-shadow: 0 4px 16px rgba(107,142,90,0.3); margin-top: 16px; display: block; text-align: center; text-decoration: none; }
+.btn.red { background: linear-gradient(135deg, #c0392b, #e74c3c); box-shadow: 0 4px 16px rgba(192,57,43,0.3); }
+.btn-back { width: 100%; padding: 10px; border: none; background: transparent; font-size: 13px; color: #8a8279; cursor: pointer; margin-top: 4px; }
+.dark-block { background: linear-gradient(135deg, #2d2a26, #3d3832); border-radius: 16px; padding: 28px 22px; margin-bottom: 14px; }
+.dark-block h2 { color: #e8c9a8; font-size: 20px; font-weight: 700; margin-bottom: 18px; line-height: 1.3; }
+.pain-item { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; }
+.pain-item svg { flex-shrink: 0; }
+.pain-item span { color: #d4c5b3; font-size: 14px; line-height: 1.5; }
+.accent-block { background: #fff8f0; border-radius: 14px; padding: 18px 20px; border-left: 4px solid #c7865b; margin-bottom: 14px; }
+.accent-block p { font-size: 14px; line-height: 1.7; color: #4a3f35; margin-bottom: 10px; }
+.accent-block p:last-child { margin-bottom: 0; }
+.green-block { background: #fff; border-radius: 14px; padding: 18px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border-left: 4px solid #6b8e5a; }
+.green-block p { font-size: 14px; line-height: 1.7; color: #4a3f35; margin-bottom: 10px; }
+.green-block .highlight { font-size: 15px; color: #c7865b; font-weight: 700; margin-top: 12px; }
+.solution-hero { background: linear-gradient(135deg, #4a6741, #5d7f53); border-radius: 16px; padding: 28px 22px; margin-bottom: 14px; }
+.solution-hero h2 { color: #e8f0e4; font-size: 20px; font-weight: 700; margin: 8px 0 6px; }
+.solution-hero .sub { color: rgba(232,240,228,0.7); font-size: 13px; margin-bottom: 18px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat-card { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.stat-num { color: #d4e8ce; font-size: 26px; font-weight: 800; line-height: 1; }
+.stat-label { color: rgba(232,240,228,0.6); font-size: 11px; margin-top: 4px; line-height: 1.3; }
+.white-card { background: #fff; border-radius: 14px; padding: 18px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+.check-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13.5px; color: #3d3832; }
+.method { font-size: 14px; color: #6b8e5a; font-weight: 700; margin-bottom: 12px; }
+.cycle { border-radius: 14px; padding: 18px; margin-bottom: 12px; }
+.cycle-body { background: linear-gradient(135deg, #f7e6d5, #f0dbc7); }
+.cycle-mind { background: linear-gradient(135deg, #e4e9f0, #d8dfe8); }
+.cycle-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.cycle-title { font-size: 15px; font-weight: 700; }
+.cycle-sub { font-size: 11px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 500; }
+.tag-body { background: rgba(107,74,46,0.1); color: #6b4a2e; }
+.tag-mind { background: rgba(58,74,94,0.1); color: #3a4a5e; }
+.result-row { display: flex; align-items: center; gap: 12px; border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; }
+.result-num { font-size: 22px; font-weight: 800; min-width: 52px; text-align: right; }
+.result-text { font-size: 13px; color: #3d3832; line-height: 1.4; }
+.review { background: #fff; border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border-left: 3px solid #6b8e5a; margin-bottom: 12px; }
+.review p { font-size: 13px; line-height: 1.65; color: #3d3832; font-style: italic; margin-bottom: 10px; }
+.review-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.review-tag { background: #f0f7ec; border-radius: 20px; padding: 3px 10px; font-size: 11px; color: #6b8e5a; font-weight: 600; }
+.cred { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 10px; padding: 10px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); margin-bottom: 8px; font-size: 13px; color: #3d3832; line-height: 1.4; }
+.cred svg { flex-shrink: 0; }
+.author-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 14px; background: linear-gradient(135deg, #6b8e5a, #8baa7a); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(107,142,90,0.3); }
+.tariff-banner { background: linear-gradient(135deg, #c7865b, #d4976c); border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; text-align: center; color: #fff; }
+.tariff-card { border-radius: 14px; padding: 18px; margin-bottom: 12px; position: relative; }
+.tariff-badge { position: absolute; top: -10px; right: 14px; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+.tariff-name { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+.tariff-price { font-size: 26px; font-weight: 800; color: #2d2a26; }
+.tariff-old { font-size: 13px; color: #c0392b; text-decoration: line-through; margin-left: 8px; }
+.tariff-desc { font-size: 12px; color: #5a5a5a; margin-top: 8px; line-height: 1.5; }
+.tariff-btn { display: block; width: 100%; margin-top: 12px; padding: 11px; border: none; border-radius: 10px; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; }
+.bonus-hero { background: linear-gradient(135deg, #6b8e5a, #7da06d); border-radius: 16px; padding: 24px 20px; text-align: center; margin-bottom: 14px; color: #fff; }
+.bonus-item { background: #fff; border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+.bonus-icon { width: 36px; height: 36px; border-radius: 50%; background: #f0f7ec; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.deadline-dark { background: linear-gradient(135deg, #2d2a26, #3d3832); border-radius: 16px; padding: 28px 22px; text-align: center; margin-bottom: 14px; }
+.deadline-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 20px; }
+.deadline-cell { background: rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 6px; }
+.deadline-val { color: #e8c9a8; font-size: 12px; font-weight: 700; margin-top: 6px; }
+.deadline-label { color: rgba(232,201,168,0.4); font-size: 10px; margin-top: 2px; }
+.section-title { font-size: 18px; font-weight: 700; color: #2d2a26; text-align: center; margin-bottom: 4px; }
+.section-sub { font-size: 12px; color: #8a8279; text-align: center; margin-bottom: 16px; }
+.site-link { display: block; text-align: center; padding: 12px 16px; font-size: 12px; color: #8a8279; text-decoration: none; }
+.dashed-box { margin-top: 14px; background: #fff8f0; border-radius: 12px; padding: 12px 16px; text-align: center; border: 1px dashed #c7865b; font-size: 13px; color: #c7865b; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:10px">
+    <img src="data:image/jpeg;base64,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" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #6b8e5a" alt="">
+    <div class="hinfo"><div class="hname">Утка Лав</div><div class="hsub">Чистое тело - чистое сознание</div></div>
+  </div>
+  <div class="counter" id="counter">1/9</div>
+</div>
+
+<div class="dots" id="dots"></div>
+<div class="tabs" id="tabs"></div>
+
+<!-- SCREEN 1: БОЛЬ + УСИЛЕНИЕ -->
+<div class="screen active" id="s0">
+  <div class="dark-block">
+    <h2>Знакомо?</h2>
+    <div class="pain-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h6l-1 8 10-12h-6l1-8z" stroke="#e8c9a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Утром встала - энергии хватило до обеда</span></div>
+    <div class="pain-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="7" ry="8" stroke="#e8c9a8" stroke-width="1.5"/></svg><span>Живот надувается после каждой еды</span></div>
+    <div class="pain-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#e8c9a8" stroke-width="1.5"/><path d="M12 6v6l4 2" stroke="#e8c9a8" stroke-width="1.5" stroke-linecap="round"/></svg><span>Спишь 8 часов, а просыпаешься разбитой</span></div>
+    <div class="pain-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5" stroke="#e8c9a8" stroke-width="1.5"/><path d="M12 14v7M9 21h6" stroke="#e8c9a8" stroke-width="1.5" stroke-linecap="round"/></svg><span>Кожа тусклая, хотя крема дорогие</span></div>
+  </div>
+  <div class="accent-block">
+    <p>Врачи объясняют «возраст». Ты сама думаешь «устала». Но тело говорит другое.</p>
+    <p>ЖКТ, микробиом, гормоны - всё связано. И пока внутри не в порядке, ни тренировки, ни кремы не дадут того, что хочешь.</p>
+  </div>
+  <div class="green-block">
+    <p style="font-weight:500">Ты в марафоне. Ты приседаешь. Уже одно это говорит о тебе больше, чем любые обещания себе «с понедельника».</p>
+    <p>Тело разогрето, привычка появилась. Если добавить работу изнутри прямо сейчас - результат будет другим. Я вижу это каждый поток.</p>
+    <p class="highlight">Этот момент не повторится.</p>
+  </div>
+</div>
+
+<!-- SCREEN 2: РЕШЕНИЕ -->
+<div class="screen" id="s1">
+  <div class="solution-hero">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M17 8C8 10 5.9 16.17 3.82 21.34M17 8A5 5 0 016 13M17 8c-3 5-8 7-14 13" stroke="#d4e8ce" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h2>Чистое тело - чистое сознание</h2>
+    <div class="sub">Бережная программа очищения за 5 недель</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">недель программы</div></div>
+      <div class="stat-card"><div class="stat-num">30</div><div class="stat-label">тем и уроков</div></div>
+      <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">живые встречи</div></div>
+      <div class="stat-card"><div class="stat-num">855+</div><div class="stat-label">учениц прошли</div></div>
+    </div>
+  </div>
+  <div class="white-card">
+    <div class="method">Метод: очищение маслом гвоздики</div>
+    <div class="check-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6b8e5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Еженедельные живые встречи с Уточкой</div>
+    <div class="check-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6b8e5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Поддержка кураторов на всём пути</div>
+    <div class="check-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6b8e5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Дневник очищения + книга рецептов</div>
+    <div class="check-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6b8e5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Протокол масла гвоздики с инструкцией</div>
+  </div>
+  <div style="margin-top:12px;background:#f5f0ea;border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px">
+    <img src="data:image/jpeg;base64,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" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #6b8e5a" alt="Утка Лав">
+    <div>
+      <div style="font-size:14px;font-weight:700;color:#2d2a26;margin-bottom:4px">Утка Лав</div>
+      <div style="font-size:11px;color:#6b5a3e;line-height:1.5">Дипломированный специалист в области биохимии, физиологии и психологии. Чемпионка Европы. 48 лет в стройном теле. На курсе также работает врач-нутрициолог.</div>
+    </div>
+  </div>
+  <div style="margin-top:14px;text-align:center">
+    <a onclick="goTo(5)" style="font-size:13px;color:#6b8e5a;font-weight:600;cursor:pointer;text-decoration:underline">Уже хочу — посмотреть тарифы →</a>
+  </div>
+</div>
+
+<!-- SCREEN 3: ПРОГРАММА -->
+<div class="screen" id="s2">
+  <div class="section-title">Программа курса</div>
+  <div style="height:16px"></div>
+  <div class="cycle cycle-body">
+    <div class="cycle-header">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="#6b4a2e" stroke-width="1.5"/></svg>
+      <div><div class="cycle-title" style="color:#6b4a2e">Цикл 1: Тело</div><div class="cycle-sub" style="color:#9a7a5a">Биохимия и физиология</div></div>
+    </div>
+    <div class="tags">
+      <span class="tag tag-body">ЖКТ</span><span class="tag tag-body">Микробиом</span><span class="tag tag-body">Гормоны</span><span class="tag tag-body">Питание</span><span class="tag tag-body">Кожа</span><span class="tag tag-body">Сахарная зависимость</span><span class="tag tag-body">Менструации</span><span class="tag tag-body">Спорт</span><span class="tag tag-body">Интуитивное питание</span>
+    </div>
+  </div>
+  <div class="cycle cycle-mind">
+    <div class="cycle-header">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2a5 5 0 014.5 7.2A5 5 0 0118 14a5 5 0 01-3 4.5V22h-6v-3.5A5 5 0 016 14a5 5 0 011.5-4.8A5 5 0 0112 2z" stroke="#3a4a5e" stroke-width="1.5"/></svg>
+      <div><div class="cycle-title" style="color:#3a4a5e">Цикл 2: Сознание</div><div class="cycle-sub" style="color:#6b7a8e">Психология и душа</div></div>
+    </div>
+    <div class="tags">
+      <span class="tag tag-mind">Стресс</span><span class="tag tag-mind">Энергия</span><span class="tag tag-mind">Сила духа</span><span class="tag tag-mind">Привычки ума</span><span class="tag tag-mind">Треугольник Карпмана</span><span class="tag tag-mind">Эго</span><span class="tag tag-mind">Сознание</span><span class="tag tag-mind">Благодарность</span>
+    </div>
+  </div>
+  <div class="white-card" style="text-align:center;border:1px solid #e8e0d5">
+    <p style="font-size:13px;color:#8a8279;line-height:1.6">15 тем про тело + 15 тем про сознание = полная трансформация изнутри и снаружи</p>
+  </div>
+</div>
+
+<!-- SCREEN 4: РЕЗУЛЬТАТЫ -->
+<div class="screen" id="s3">
+  <div class="section-title">Результаты участниц</div>
+  <div class="section-sub">Реальные цифры по прошлым потокам</div>
+  <div class="result-row" style="background:#fdf0ee"><div class="result-num" style="color:#c0392b">855</div><div class="result-text">повысили энергию и либидо</div></div>
+  <div class="result-row" style="background:#eef9f1"><div class="result-num" style="color:#27ae60">711</div><div class="result-text">снизили вес и наладили ЖКТ</div></div>
+  <div class="result-row" style="background:#f5eef9"><div class="result-num" style="color:#8e44ad">702</div><div class="result-text">расцвет продуктивности</div></div>
+  <div class="result-row" style="background:#eef4fb"><div class="result-num" style="color:#2980b9">684</div><div class="result-text">научились слышать тело</div></div>
+  <div class="result-row" style="background:#fdf8eb"><div class="result-num" style="color:#d4a017">657</div><div class="result-text">ясность ума</div></div>
+  <div class="result-row" style="background:#fef5ec"><div class="result-num" style="color:#e67e22">612</div><div class="result-text">изменения во внешности</div></div>
+  <div class="result-row" style="background:#ecfbf7"><div class="result-num" style="color:#1abc9c">378</div><div class="result-text">нормальный сон</div></div>
+  <div class="result-row" style="background:#f0f7ec"><div class="result-num" style="color:#6b8e5a">324</div><div class="result-text">увеличили доход</div></div>
+</div>
+
+<!-- SCREEN 5: ОТЗЫВЫ -->
+<div class="screen" id="s4">
+  <div class="section-title">Отзывы участниц</div>
+  <div class="section-sub">Реальные истории из канала отзывов</div>
+  <div class="review"><p>«Похудела на 12 кг после первого потока. Вернулась в вес до родов после 5 детей. Пришли регулярные месячные в 52 года. Проблемы с костями и суставами прошли - еле ходила, теперь летаю!»</p><div class="review-tags"><span class="review-tag">-12 кг</span><span class="review-tag">месячные в 52</span><span class="review-tag">суставы прошли</span></div></div>
+  <div class="review"><p>«Сижу перед пакетом самых вкусных конфет, а мне их не хочется. Организм отказывается, мозг в шоке! Не хочется теста, не переедаю и насыщаюсь.»</p><div class="review-tags"><span class="review-tag">сахар ушёл</span><span class="review-tag">нет переедания</span></div></div>
+  <div class="review"><p>«Наладилась личная жизнь с человеком, которым мы боялись быть вместе много лет. Энергия повысилась, захотелось жить, мечтать, творить.»</p><div class="review-tags"><span class="review-tag">личная жизнь</span><span class="review-tag">энергия</span></div></div>
+  <a href="https://t.me/otzyvyctcs" target="_blank" style="display:block;margin-top:14px;text-align:center;font-size:13px;color:#6b8e5a;font-weight:600;text-decoration:none">Все реальные отзывы в Telegram-канале →</a>
+</div>
+
+<!-- SCREEN 6: ТАРИФЫ -->
+<div class="screen" id="s5">
+  <div class="tariff-banner">
+    <div style="font-size:13px;opacity:0.9">Только для тех, кто приседал с Уточкой эти 10 дней</div>
+    <div style="font-size:15px;font-weight:700;margin-top:4px">Эти цены действуют до 14 марта</div>
+    <div style="font-size:12px;opacity:0.7;margin-top:4px">Не для подписчиков. Не для новичков. Для вас.</div>
+  </div>
+
+  <div class="tariff-card" style="background:linear-gradient(135deg,#f9f3e3,#f5ecd5);border:2px solid #d4a017">
+    <div class="tariff-badge" style="background:#d4a017">6 мест!</div>
+    <div class="tariff-name" style="color:#d4a017">GOLD</div>
+    <div><span class="tariff-price">145 000</span> <span style="font-size:13px;color:#8a8279">руб</span></div>
+    <div class="tariff-desc">Всё из VIP + разборы в малой группе с Уточкой + индивидуальная консультация доктора-нутрициолога + личная консультация с Уткой Лав</div>
+    <a href="https://ytkalove.online/Gold_145.000" target="_blank" class="tariff-btn" style="background:#d4a017">Выбрать GOLD</a>
+  </div>
+
+  <div class="tariff-card" style="background:#fff;border:2px solid #6b8e5a">
+    <div class="tariff-badge" style="background:#6b8e5a">популярный</div>
+    <div class="tariff-name" style="color:#6b8e5a">VIP + ВРАЧ</div>
+    <div><span class="tariff-price">38 900</span> <span style="font-size:13px;color:#8a8279">руб</span> <span class="tariff-old">58 900</span></div>
+    <div class="tariff-desc">Программа + обратная связь от доктора-нутрициолога по анализам + анкета здоровья + индивидуальная дорожная карта + консультация доктора + личное ведение Уточки</div>
+    <a href="https://ytkalove.online/VIP_38.900" target="_blank" class="tariff-btn" style="background:#6b8e5a">Выбрать VIP</a>
+  </div>
+
+  <div class="tariff-card" style="background:#fff;border:1px solid #e8e0d5">
+    <div class="tariff-name" style="color:#c7865b">СТАНДАРТ</div>
+    <div><span class="tariff-price">24 900</span> <span style="font-size:13px;color:#8a8279">руб</span> <span class="tariff-old">35 900</span></div>
+    <div class="tariff-desc">5 недель программы + протокол масла гвоздики + 4 живые встречи с Уточкой + кураторы + дневник очищения + книга рецептов</div>
+    <div style="margin-top:8px;padding:8px 12px;background:#f0f7ec;border-radius:8px;text-align:center;font-size:13px;color:#6b8e5a;font-weight:600">711 руб в день — меньше одного визита к врачу</div>
+    <a href="https://ytkalove.online/Standart_24.900" target="_blank" class="tariff-btn" style="background:#c7865b">Выбрать Стандарт</a>
+  </div>
+
+  <a href="https://ytka-health.online/chistoe_telo" target="_blank" class="site-link">Все тарифы, включая парные и индивидуальное сопровождение — на сайте →</a>
+</div>
+
+<!-- SCREEN 7: БОНУС + ГАРАНТИЯ + ДЕДЛАЙН (финал) -->
+<div class="screen" id="s6">  <div class="bonus-hero">
+    <img src="data:image/jpeg;base64,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" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5)" alt="">
+    <h2 style="font-size:18px;font-weight:700;margin:10px 0 6px">Бонус «Марафонка»</h2>
+    <p style="opacity:0.7;font-size:13px">Только для тех, кто приседает с Уточкой</p>
+  </div>
+
+  <div class="bonus-item"><div class="bonus-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="#6b8e5a" stroke-width="1.5"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z" stroke="#6b8e5a" stroke-width="1.5"/></svg></div><div><div style="font-size:14px;font-weight:600;color:#2d2a26">Чек-лист подготовки</div><div style="font-size:12px;color:#8a8279;margin-top:2px">Питание + тело за 7 дней до старта. Придёшь готовой и получишь максимум.</div></div></div>
+  <div class="bonus-item"><div class="bonus-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="#6b8e5a" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="#6b8e5a" stroke-width="1.5"/></svg></div><div><div style="font-size:14px;font-weight:600;color:#2d2a26">Спецэфир «После марафона»</div><div style="font-size:12px;color:#8a8279;margin-top:2px">Запись закрытого эфира - что делать с телом после марафона. Только для своих.</div></div></div>
+  <div class="bonus-item"><div class="bonus-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 010 7H6" stroke="#6b8e5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div style="font-size:14px;font-weight:600;color:#2d2a26">Цена на 5 000 - 20 000 руб дешевле</div><div style="font-size:12px;color:#8a8279;margin-top:2px">На сайте дороже. Это благодарность за ваш марафон.</div></div></div>
+
+  <!-- Гарантия -->
+  <div style="margin-top:14px;background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(0,0,0,0.04);border-left:4px solid #6b8e5a">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#6b8e5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="font-size:14px;font-weight:700;color:#2d2a26">Гарантия 14 дней</span>
+    </div>
+    <p style="font-size:13px;color:#4a3f35;line-height:1.6;margin:0">Пройди первые 2 недели, выполняй практики. Если не почувствуешь изменений - верну деньги. Без вопросов.</p>
+  </div>
+
+  <!-- Дедлайн -->
+  <div style="margin-top:14px;background:linear-gradient(135deg,#2d2a26,#3d3832);border-radius:14px;padding:18px 20px;text-align:center">
+    <p style="color:#e8c9a8;font-size:16px;font-weight:700;margin:0 0 8px">Старт курса: 18 марта</p>
+    <p style="color:rgba(232,201,168,0.7);font-size:13px;line-height:1.6;margin:0 0 10px">Сегодня 11 марта. До 14-го три дня. Звучит как много. Но вот что обычно происходит: говоришь себе «куплю 13-го» - и 13-го находится причина отложить. А 14-го всё.</p>
+    <div style="margin-top:12px;padding:10px 14px;background:rgba(107,142,90,0.15);border-radius:10px">
+      <p style="color:#d4e8ce;font-size:13px;font-weight:600;margin:0;line-height:1.5">Кто оплатит сегодня — получит чек-лист подготовки и доступ в закрытый канал прямо сейчас. Не 18 марта. Сегодня.</p>
+    </div>
+    <p style="color:#e8c9a8;font-size:13px;font-weight:600;margin:0">Спеццена и бонусы - до 14 марта</p>
+  </div>
+
+  <div style="margin-top:16px;text-align:center;font-size:13px;color:#8a8279">
+    Вопросы? Напиши менеджеру
+  </div>
+</div>
+
+<button class="btn" id="mainBtn" onclick="next()">Что с этим делать?</button>
+<button class="btn-back" id="backBtn" style="display:none" onclick="prev()">← Назад</button>
+
+</div>
+
+<script>
+const titles = ["Знакомо?","Решение","Программа","Цифры","Отзывы","Тарифы","Бонус и старт"];
+const btns = ["Что с этим делать?","Посмотреть программу","Какие результаты?","Читать отзывы","Посмотреть тарифы","Что ещё получу?","ХОЧУ ОПЛАТИТЬ"];
+let cur = 0;
+const total = 7;
+
+function render() {
+  document.querySelectorAll('.screen').forEach((s,i) => s.classList.toggle('active', i===cur));
+  document.getElementById('counter').textContent = (cur+1)+'/'+total;
+  document.getElementById('mainBtn').textContent = btns[cur];
+  document.getElementById('mainBtn').className = cur===total-1 ? 'btn red' : 'btn';
+  document.getElementById('backBtn').style.display = cur>0 ? 'block' : 'none';
+  
+  let dotsH = '';
+  for(let i=0;i<total;i++) dotsH += '<div class="dot'+(i===cur?' active':(i<cur?' done':''))+'" onclick="goTo('+i+')"></div>';
+  document.getElementById('dots').innerHTML = dotsH;
+  
+  let tabsH = '';
+  for(let i=0;i<total;i++) tabsH += '<div class="tab'+(i===cur?' active':'')+'" onclick="goTo('+i+')">'+titles[i]+'</div>';
+  document.getElementById('tabs').innerHTML = tabsH;
+}
+
+function next() { if(cur===total-1){goTo(5)}else if(cur<total-1){cur++;render()} }
+function prev() { if(cur>0){cur--;render()} }
+function goTo(i) { cur=i;render(); }
+
+render();
+</script>
+</body>
+</html>
