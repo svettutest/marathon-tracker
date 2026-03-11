@@ -314,11 +314,20 @@ function render() {
   document.getElementById('tabs').innerHTML = tabsH;
 }
 
-function next() { if(cur===total-1){goTo(5)}else if(cur<total-1){cur++;render()} }
-function prev() { if(cur>0){cur--;render()} }
-function goTo(i) { cur=i;render(); }
+function scrollTop() {
+  window.scrollTo({top:0,behavior:'instant'});
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  setTimeout(function(){window.scrollTo(0,0);document.body.scrollTop=0;document.documentElement.scrollTop=0;},50);
+  setTimeout(function(){window.scrollTo(0,0);},150);
+}
+
+function next() { if(cur===total-1){goTo(5)}else if(cur<total-1){cur++;render();scrollTop()} }
+function prev() { if(cur>0){cur--;render();scrollTop()} }
+function goTo(i) { cur=i;render();scrollTop(); }
 
 render();
+scrollTop();
 </script>
 </body>
 </html>
