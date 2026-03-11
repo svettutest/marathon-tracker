@@ -282,6 +282,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 </div>
 
 <script>
+// Telegram Mini App init
+if (window.Telegram?.WebApp) {
+  window.Telegram.WebApp.ready();
+  window.Telegram.WebApp.expand();
+}
+// Force scroll to top
+window.scrollTo(0, 0);
+document.body.scrollTop = 0;
+document.documentElement.scrollTop = 0;
+
 const titles = ["Знакомо?","Решение","Программа","Цифры","Отзывы","Тарифы","Бонус и старт"];
 const btns = ["Что с этим делать?","Посмотреть программу","Какие результаты?","Читать отзывы","Посмотреть тарифы","Что ещё получу?","ХОЧУ ОПЛАТИТЬ"];
 let cur = 0;
@@ -293,6 +303,7 @@ function render() {
   document.getElementById('mainBtn').textContent = btns[cur];
   document.getElementById('mainBtn').className = cur===total-1 ? 'btn red' : 'btn';
   document.getElementById('backBtn').style.display = cur>0 ? 'block' : 'none';
+  window.scrollTo(0, 0);
   
   let dotsH = '';
   for(let i=0;i<total;i++) dotsH += '<div class="dot'+(i===cur?' active':(i<cur?' done':''))+'" onclick="goTo('+i+')"></div>';
